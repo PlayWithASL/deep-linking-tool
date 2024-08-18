@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pretend LMS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      h1, h2 {
+        text-align: center;
+      }
+      form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      select, input[type="number"], input[type="submit"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+      #deepLink {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      #qrcode {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+        max-width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Generate Deep Link</h1>
+    <form id="deepLinkForm">
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="animals" selected>Animals</option>
+        <option value="camping">Camping</option>
+        <option value="colors">Colors</option>
+        <option value="food">Food</option>
+        <option value="nature">Nature</option>
+        <option value="vehicles">Vehicles</option>
+        <option value="jobs">Jobs</option>
+        <option value="travel">Travel</option>
+        <option value="weather">Weather</option>
+        <option value="emotions">Emotions</option>
+        <option value="space">Space</option>
+        <option value="crafts">Crafts</option>
+      </select>
+
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty" name="difficulty">
+        <option value="easy" selected>Easy</option>
+        <option value="normal">Normal</option>
+        <option value="hard">Hard</option>
+      </select>
+      
+      <label for="timer">Timer:</label>
+      <input type="number" id="timer" name="timer" value="60">
+      
+      <input type="submit" value="Generate Deep Link">
+    </form>
+    
+    <h2>Generated Deep Link:</h2>
+    <a id="deepLink" href=""></a>
+    <div id="qrcode"></div>
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+    <script>
+      document.getElementById('deepLinkForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var category = document.getElementById('category').value;
+        var difficulty = document.getElementById('difficulty').value;
+        var timer = document.getElementById('timer').value;
+        
+        var deepLink = 'playwithasl://memorymatch?category=' + category + '&difficulty=' + difficulty + '&timer=' + timer;
+        
+        document.getElementById('deepLink').setAttribute('href', deepLink);
+        document.getElementById('deepLink').innerText = deepLink;
+
+        var qrCodeCanvas = document.getElementById('qrcode');
+        qrCodeCanvas.innerHTML = "";  // Clear previous QR code
+        new QRCode(qrCodeCanvas, deepLink);
+      });
+    </script>
+  </body>
+</html>
