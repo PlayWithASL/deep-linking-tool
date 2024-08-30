@@ -85,6 +85,9 @@
       
       <label for="timer">Timer:</label>
       <input type="number" id="timer" name="timer" value="60">
+
+      <label for="callback">Callback URL:</label>
+      <input type="text" id="callback" name="callback" value="">
       
       <input type="submit" value="Generate Deep Link">
     </form>
@@ -101,8 +104,13 @@
         var category = document.getElementById('category').value;
         var difficulty = document.getElementById('difficulty').value;
         var timer = document.getElementById('timer').value;
+        var callback = document.getElementById('callback').value;
         
         var deepLink = 'playwithasl://memorymatch?category=' + category + '&difficulty=' + difficulty + '&timer=' + timer;
+
+        if (callback) {
+          deepLink += '&callback=' + callback;
+        }
         
         document.getElementById('deepLink').setAttribute('href', deepLink);
         document.getElementById('deepLink').innerText = deepLink;
