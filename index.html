@@ -109,7 +109,7 @@
         var deepLink = 'playwithasl://memorymatch?category=' + category + '&difficulty=' + difficulty + '&timer=' + timer;
 
         if (callback) {
-          deepLink += '&callback=' + callback;
+          deepLink += '&callback=' + encodeURIComponent(callback);
         }
         
         document.getElementById('deepLink').setAttribute('href', deepLink);
