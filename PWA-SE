@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PWA School Edition Deep Link Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Basic styling for clarity */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 1em;
+      background: #f9f9f9;
+    }
+    label {
+      display: block;
+      margin: 0.5em 0 0.2em;
+      font-weight: bold;
+    }
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 0.5em;
+      margin-bottom: 1em;
+    }
+    button {
+      width: 100%;
+      padding: 0.7em;
+      background: #4CAF50;
+      color: white;
+      font-size: 1em;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    #deepLinkContainer {
+      margin-top: 2em;
+      text-align: center;
+    }
+    #deepLink {
+      display: block;
+      margin-bottom: 1em;
+      font-weight: bold;
+      word-wrap: break-word;
+    }
+    #qrcode {
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>PWA: School Edition Deep Link Generator</h1>
+
+  <form id="deepLinkForm">
+    <label for="category">Category:</label>
+    <select id="category" name="category" required>
+      <option value="animals" selected>Animals</option>
+      <option value="camping">Camping</option>
+      <option value="colors">Colors</option>
+      <option value="food">Food</option>
+      <option value="nature">Nature</option>
+      <option value="vehicles">Vehicles</option>
+      <option value="jobs">Jobs</option>
+      <option value="travel">Travel</option>
+      <option value="weather">Weather</option>
+      <option value="emotions">Emotions</option>
+      <option value="space">Space</option>
+      <option value="crafts">Crafts</option>
+    </select>
+
+    <label for="difficulty">Difficulty:</label>
+    <select id="difficulty" name="difficulty" required>
+      <option value="easy" selected>Easy</option>
+      <option value="normal">Normal</option>
+      <option value="hard">Hard</option>
+    </select>
+    
+    <label for="timer">Timer (seconds):</label>
+    <input type="number" id="timer" name="timer" required value="60" min="1">
+
+   <label for="callback">Callback URL:</label>
+
+      <input type="text" id="callback" name="callback" value="https://4hs5agtnr2yxfjczv6dqsb3g7i0qgkhy.lambda-url.us-west-1.on.aws/?source=SchoolEdition">
+
+
+    <button type="submit">Generate Deep Link</button>
+  </form>
+
+  <div id="deepLinkContainer">
+    <a id="deepLink" href="" target="_blank"></a>
+    <div id="qrcode"></div>
+  </div>
+
+  <!-- Include QRCode.js from a CDN (optional) -->
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+  <script>
+    // STEP 1: Get the form and listen for submissions
+    document.getElementById('deepLinkForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // STEP 2: Grab user inputs
+      var category = document.getElementById('category').value;
+      var difficulty = document.getElementById('difficulty').value;
+      var timer = document.getElementById('timer').value;
+      var callback = document.getElementById('callback').value;
+
+      // STEP 3: Validate that callback includes "source=SchoolEdition"
+      // (You can make this a stronger check if needed)
+      if (!callback.includes('source=SchoolEdition')) {
+        alert("Please include 'source=SchoolEdition' in your callback URL.");
+        return;
+      }
+
+      // STEP 4: Build the deep link
+      var scheme = 'playwithasl-schooledition://memorymatch'; // The path/host can vary
+      var deepLink = scheme
+        + '?category=' + encodeURIComponent(category)
+        + '&difficulty=' + encodeURIComponent(difficulty)
+        + '&timer=' + encodeURIComponent(timer)
+        + '&callback=' + encodeURIComponent(callback);
+
+      // STEP 5: Display the link
+      var linkElement = document.getElementById('deepLink');
+      linkElement.href = deepLink;
+      linkElement.textContent = deepLink;
+
+      // STEP 6: Generate QR Code (optional)
+      var qrCodeContainer = document.getElementById('qrcode');
+      // Clear previous QR code if any
+      qrCodeContainer.innerHTML = "";
+      new QRCode(qrCodeContainer, deepLink);
+    });
+  </script>
+
+</body>
+</html>
