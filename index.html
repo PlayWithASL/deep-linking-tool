@@ -60,6 +60,13 @@
   <body>
     <h1>Generate Deep Link</h1>
     <form id="deepLinkForm">
+      <!-- New Game Mode dropdown -->
+      <label for="gameMode">Game Mode:</label>
+      <select id="gameMode" name="gameMode">
+        <option value="memorymatch" selected>Memory Match</option>
+        <option value="tilt">TILT!</option>
+      </select>
+
       <label for="category">Category:</label>
       <select id="category" name="category">
         <option value="animals" selected>Animals</option>
@@ -101,12 +108,16 @@
     <script>
       document.getElementById('deepLinkForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        var category = document.getElementById('category').value;
-        var difficulty = document.getElementById('difficulty').value;
-        var timer = document.getElementById('timer').value;
-        var callback = document.getElementById('callback').value;
+
+        var mode      = document.getElementById('gameMode').value;
+        var category  = document.getElementById('category').value;
+        var difficulty= document.getElementById('difficulty').value;
+        var timer     = document.getElementById('timer').value;
+        var callback  = document.getElementById('callback').value;
         
-        var deepLink = 'playwithasl://memorymatch?category=' + category + '&difficulty=' + difficulty + '&timer=' + timer;
+        // include the selected mode in the scheme
+        var deepLink = 'playwithasl://' + mode + '?category=' + category +
+                       '&difficulty=' + difficulty + '&timer=' + timer;
 
         if (callback) {
           deepLink += '&callback=' + encodeURIComponent(callback);
